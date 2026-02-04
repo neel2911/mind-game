@@ -45,11 +45,11 @@ const Card = ({ index }: { index: number }) => {
             style={{ width: '80px', height: '100px' }}
         >
             <FlipCard frontContent={<img
-                src="/images/back.png"
+                src="./images/back.png"
                 alt="Card Back"
                 className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
             />} backContent={<img
-                src="/images/card_1.png"
+                src="./images/card_1.png"
                 alt="Card Back"
                 className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
             />} />
