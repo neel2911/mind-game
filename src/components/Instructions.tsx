@@ -1,5 +1,7 @@
 import { ScrollText, MousePointer2, CheckCircle, XCircle, Calculator } from "lucide-react";
+import string from '@/i18n/en.json'
 
+const { title } = string.rules
 const rules = [
     {
         icon: ScrollText,
@@ -9,7 +11,7 @@ const rules = [
     {
         icon: MousePointer2,
         text: "For each turn, the player selects two cards to flip them over.",
-        color: "text-purple-400"
+        color: "text-indigo-400"
     },
     {
         icon: CheckCircle,
@@ -33,7 +35,7 @@ export const Instructions = () => {
         <div className="max-w-2xl mx-auto py-4">
             <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3 border-b border-slate-800 pb-4">
                 <ScrollText className="w-6 h-6 text-indigo-500" />
-                How to Play
+                {title}
             </h2>
 
             <div className="space-y-4">

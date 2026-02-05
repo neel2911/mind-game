@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useState } from 'react';
+import string from "@/i18n/en.json"
+
+const { instruction } = string.playArea
 
 const FlipCard = ({ frontContent, backContent }: { frontContent: React.ReactNode, backContent: React.ReactNode }) => {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -45,11 +48,11 @@ const Card = ({ index }: { index: number }) => {
             style={{ width: '80px', height: '100px' }}
         >
             <FlipCard frontContent={<img
-                src="./images/back.png"
+                src="/mind-game/images/back.png"
                 alt="Card Back"
                 className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
             />} backContent={<img
-                src="./images/card_1.png"
+                src="/mind-game/images/card_1.png"
                 alt="Card Back"
                 className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
             />} />
@@ -70,7 +73,7 @@ export const PlayArea = () => {
             </div>
 
             <div className="text-sm text-slate-500 italic">
-                Select two cards to find a match
+                {instruction}
             </div>
         </div>
     );
