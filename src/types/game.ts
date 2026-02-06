@@ -1,6 +1,6 @@
 export type SettingsType = {
-    playerName: string,
-    difficulty: string
+    playerName: string | null,
+    difficulty: string | null
 }
 
 export type StatsType = {

@@ -20,7 +20,7 @@ export const useSettings = () => {
 
 export const SettingsProvider: React.FC<PropsWithChildren> = (props) => {
     const { children } = props
-    const [settings, setSettings] = useState<SettingsType>({ playerName: "", difficulty: DEFAULT_DIFFICULTY })
+    const [settings, setSettings] = useState<SettingsType>({ playerName: "", difficulty: null })
     const [states, setStates] = useState<StatsType>({ score: String(0), highScore: String(0) })
     const handleUpdateSettings = useCallback((newSettings: SettingsType) => {
         setSettings({ ...newSettings })
@@ -36,17 +36,21 @@ export const SettingsProvider: React.FC<PropsWithChildren> = (props) => {
     }, [])
 
     useEffect(() => {
-        const settings = localStorage.getItem(LS_SETTINGS_KEY)
-        const states = localStorage.getItem(LS_STATES_KEY)
 
-        if (settings) {
-            setSettings(JSON.parse(settings))
+        const ls_settings = localStorage.getItem(LS_SETTINGS_KEY)
+        const ls_states = localStorage.getItem(LS_STATES_KEY)
+
+        console.log(ls_settings)
+        if (ls_settings) {
+            setSettings({ ...JSON.parse(ls_settings) })
         }
 
-        if (states) {
-            setStates((preState) => ({ ...preState, highScore: JSON.parse(states) }))
+        if (ls_states) {
+            setStates((preState) => ({ ...preState, highScore: JSON.parse(ls_states) }))
         }
     }, [])
+
+    console.log({ settings })
 
     return <SettingsContext.Provider value={{ settings, states, handleUpdateSettings, handleUpdateState, handleUpdateScore }}>{children}</SettingsContext.Provider>
 }

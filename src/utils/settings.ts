@@ -11,7 +11,25 @@ export const CARDS: CardType[] = Array(24).fill(null).map((_item, index) => ({
     url: `/mind-game/images/card_${index + 1}.png`
 }))
 
-export function getRandomInt(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+export function getRandomInt(value: number): number {
+    return Math.floor(Math.random() * (value + 1));
 }
 
+export function shuffle<T extends any[]>(data: T) {
+    const result = [...data];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = getRandomInt(i);
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+
+    return result;
+}
+
+
+export const shuffleCards = (difficulty: number) => {
+    const neededCards = difficulty / 2
+    const uniqueCards = CARDS.slice(0, neededCards)
+    return Math.floor(Math.random() * difficulty) % 2 == 0 ?
+        shuffle<CardType[]>([...uniqueCards.reverse(), ...uniqueCards]) :
+        shuffle<CardType[]>([...uniqueCards, ...uniqueCards.reverse()])
+}

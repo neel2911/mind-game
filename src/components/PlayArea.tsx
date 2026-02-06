@@ -1,19 +1,14 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { useState } from 'react';
+import { useState, type ComponentProps } from 'react';
 import string from "@/i18n/en.json"
 import { useGame } from "./hooks/useGame";
 import clsx from "clsx";
 
 const { instruction } = string.playArea
 
-const FlipCard = ({ frontContent, backContent }: { frontContent: React.ReactNode, backContent: React.ReactNode }) => {
-    const [isFlipped, setIsFlipped] = useState(false);
-
-    const handleFlip = () => {
-        setIsFlipped(!isFlipped);
-    };
-
+const FlipCard = (props: { frontSide: React.ReactNode, backSide: React.ReactNode, isFlipped: boolean, handleFlip: () => void }) => {
+    const { frontSide, backSide, isFlipped, handleFlip } = props
     return (
         <div className="h-25 w-20 perspective-[1000px] cursor-pointer relative shadow-lg">
 
@@ -25,12 +20,12 @@ const FlipCard = ({ frontContent, backContent }: { frontContent: React.ReactNode
 
                 {/* FRONT FACE */}
                 <div className="absolute inset-0 h-full w-full backface-hidden">
-                    {frontContent}
+                    {backSide}
                 </div>
 
                 {/* BACK FACE */}
                 <div className="absolute inset-0 h-full w-full transform-[rotateY(180deg)] backface-hidden">
-                    {backContent}
+                    {frontSide}
                 </div>
 
             </div>
@@ -40,26 +35,47 @@ const FlipCard = ({ frontContent, backContent }: { frontContent: React.ReactNode
 
 export default FlipCard;
 
+const Image: React.FC<ComponentProps<'img'>> = (props) => {
+    const { src, alt } = props
+
+    return <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
+    />
+}
 
 
+const Card = (props: {
+    index: number,
+    cardId: number,
+    backImgSrc: string,
+    frontImgSrc: string,
+    matched: boolean,
+    heightInPx: string
+    widthInPx: string
+}) => {
+    const { index, cardId, backImgSrc, frontImgSrc, matched, widthInPx, heightInPx } = props
+    const [isFlipped, setIsFlipped] = useState(false);
+    const { handleCardFlip } = useGame()
 
-const Card = ({ index }: { index: number }) => {
+    const handleFlip = () => {
+        setIsFlipped(!isFlipped);
+        handleCardFlip(cardId)
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.05 }}
-            style={{ width: '80px', height: '100px' }}
+            style={{ width: widthInPx, height: heightInPx }}
         >
-            <FlipCard frontContent={<img
-                src="/mind-game/images/back.png"
-                alt="Card Back"
-                className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
-            />} backContent={<img
-                src="/mind-game/images/card_1.png"
-                alt="Card Back"
-                className="w-full h-full object-cover rounded-lg border-2 border-slate-200/80"
-            />} />
+            {!matched && <FlipCard
+                backSide={<Image src={backImgSrc} alt="card back" />}
+                frontSide={<Image src={frontImgSrc} alt={`card-${cardId}`} />}
+                handleFlip={handleFlip} isFlipped={isFlipped}
+            />}
 
         </motion.div>
     );
@@ -70,21 +86,23 @@ const Card = ({ index }: { index: number }) => {
 export const PlayArea = () => {
 
     const { playCards, columns } = useGame()
-
+    console.log({ playCards })
     return (
         <div className="flex flex-col items-center justify-center h-full space-y-8">
             {/* The Card Grid */}
-            <div className={clsx("grid gap-4 p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50", {
+            <div className={clsx("grid gap-4 p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50 grid-cols-8 md:grid-cols-8", {
                 'grid-cols-4 md:grid-cols-4': columns === 4,
-                'grid-cols-8 md:grid-cols-8': columns === 8,
-                'grid-cols-12 md:grid-cols-12': columns === 12,
-                'grid-cols-16 md:grid-cols-16': columns === 16,
-                'grid-cols-20 md:grid-cols-20': columns === 20,
-                'grid-cols-24 md:grid-cols-24': columns === 24
             })}>
-
-                {playCards.map((_, i) => (
-                    <Card key={i} index={i} />
+                {playCards.map((card, i) => (
+                    <Card
+                        key={`${card.id}-${i}`}
+                        index={i}
+                        cardId={card.id}
+                        backImgSrc="/mind-game/images/back.png"
+                        frontImgSrc={card.url}
+                        heightInPx="100px"
+                        widthInPx="80"
+                        matched={false} />
                 ))}
             </div>
 
