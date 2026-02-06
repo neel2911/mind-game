@@ -5,6 +5,7 @@ import string from '@/i18n/en.json'
 import VictoryModal from './components/Victorymodal';
 import { Button } from './components/ui/button';
 import confetti from "canvas-confetti"
+import { SettingsContext, SettingsProvider } from './context/SettingContext';
 
 // The "Elegant" Dark Background
 const Background = () => (
@@ -17,10 +18,6 @@ const Background = () => (
 const { title, description } = string.meta
 
 export default function App() {
-
-  const [player] = useState("dsfsd");
-  const [score] = useState("80%");
-  const [highScore] = useState("75%");
   const [isGameOver, setIsGameOver] = useState(false)
 
   const handleClick = useCallback(() => {
@@ -54,32 +51,33 @@ export default function App() {
   return (
     <div className="relative min-h-screen flex flex-col items-center pt-20 px-4 font-sans text-slate-100">
       <Background />
-
       <div className="w-full max-w-4xl space-y-8">
-        {/* Header Section with Stats */}
-        <div className="space-y-6">
-          <div className="flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
-            <div>
-              <h1 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-r from-indigo-400 to-cyan-400">
-                {title}
-              </h1>
-              <p className="text-slate-400 mt-1">{description}</p>
+        <SettingsProvider>
+          {/* Header Section with Stats */}
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
+              <div>
+                <h1 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-r from-indigo-400 to-cyan-400">
+                  {title}
+                </h1>
+                <p className="text-slate-400 mt-1">{description}</p>
+              </div>
+              {/* Stats Display from Screenshot */}
+              <GameStatsHeader />
             </div>
-            {/* Stats Display from Screenshot */}
-            <GameStatsHeader player={player} score={score} highScore={highScore} />
           </div>
-        </div>
 
 
-        {/* Main Tabbed Interface */}
-        <GameTabs />
+          {/* Main Tabbed Interface */}
+          <GameTabs />
 
+        </SettingsProvider>
         <Button onClick={handleClick}>Game over</Button>
         <VictoryModal isOpen={isGameOver}
           moves={3}
           onRestart={() => { setIsGameOver(false) }}
           onClose={() => { setIsGameOver(false) }} />
       </div>
-    </div>
+    </div >
   );
 } 

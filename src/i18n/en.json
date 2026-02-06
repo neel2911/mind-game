@@ -54,5 +54,12 @@
             "play_again": "Play Again",
             "close": "Close"
         }
+    },
+    "settings": {
+        "title": "Game Settings",
+        "description": "Customize your gameplay experience",
+        "playerName": "Player Name",
+        "numberOfCards": "Number of Cards",
+        "saveSetting": "Save Settings"
     }
 }

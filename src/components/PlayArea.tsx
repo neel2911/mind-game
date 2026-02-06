@@ -2,6 +2,8 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useState } from 'react';
 import string from "@/i18n/en.json"
+import { useGame } from "./hooks/useGame";
+import clsx from "clsx";
 
 const { instruction } = string.playArea
 
@@ -39,6 +41,8 @@ const FlipCard = ({ frontContent, backContent }: { frontContent: React.ReactNode
 export default FlipCard;
 
 
+
+
 const Card = ({ index }: { index: number }) => {
     return (
         <motion.div
@@ -62,12 +66,24 @@ const Card = ({ index }: { index: number }) => {
 };
 
 
+
 export const PlayArea = () => {
+
+    const { playCards, columns } = useGame()
+
     return (
         <div className="flex flex-col items-center justify-center h-full space-y-8">
             {/* The Card Grid */}
-            <div className="grid grid-cols-4 md:grid-cols-6 gap-4 p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50">
-                {Array.from({ length: 16 }).map((_, i) => ( // displaying 16 cards for example
+            <div className={clsx("grid gap-4 p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50", {
+                'grid-cols-4 md:grid-cols-4': columns === 4,
+                'grid-cols-8 md:grid-cols-8': columns === 8,
+                'grid-cols-12 md:grid-cols-12': columns === 12,
+                'grid-cols-16 md:grid-cols-16': columns === 16,
+                'grid-cols-20 md:grid-cols-20': columns === 20,
+                'grid-cols-24 md:grid-cols-24': columns === 24
+            })}>
+
+                {playCards.map((_, i) => (
                     <Card key={i} index={i} />
                 ))}
             </div>
@@ -75,6 +91,6 @@ export const PlayArea = () => {
             <div className="text-sm text-slate-500 italic">
                 {instruction}
             </div>
-        </div>
+        </div >
     );
 };
