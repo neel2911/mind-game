@@ -5,7 +5,8 @@ import string from '@/i18n/en.json'
 import VictoryModal from './components/Victorymodal';
 import { Button } from './components/ui/button';
 import confetti from "canvas-confetti"
-import { SettingsContext, SettingsProvider } from './context/SettingContext';
+import { SettingsProvider } from './context/SettingContext';
+import { Toaster } from '@/components/ui/sonner';
 
 // The "Elegant" Dark Background
 const Background = () => (
@@ -78,6 +79,18 @@ export default function App() {
           onRestart={() => { setIsGameOver(false) }}
           onClose={() => { setIsGameOver(false) }} />
       </div>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          // This creates the Dark Purple theme to match your game
+          className: "bg-[#0f172a] border-purple-500/30 text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]",
+          style: {
+            background: '#0f172a',
+            border: '1px solid rgba(168, 85, 247, 0.4)',
+            color: 'white',
+          },
+        }}
+      />
     </div >
   );
 } 

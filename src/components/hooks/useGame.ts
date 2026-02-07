@@ -30,7 +30,6 @@ export const useGame = () => {
 
     return {
         playCards,
-        columns: Number(difficulty) / 2,
         handleCardFlip,
     }
 }

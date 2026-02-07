@@ -7,33 +7,50 @@ import clsx from "clsx";
 
 const { instruction } = string.playArea
 
-const FlipCard = (props: { frontSide: React.ReactNode, backSide: React.ReactNode, isFlipped: boolean, handleFlip: () => void }) => {
-    const { frontSide, backSide, isFlipped, handleFlip } = props
-    return (
-        <div className="h-25 w-20 perspective-[1000px] cursor-pointer relative shadow-lg">
+interface FlipCardProps {
+    frontSide: React.ReactNode;
+    backSide: React.ReactNode;
+    isFlipped: boolean;
+    isMatched: boolean;
+    handleFlip: () => void;
+}
 
+const FlipCard = ({ frontSide, backSide, isFlipped, isMatched, handleFlip }: FlipCardProps) => {
+    return (
+        <motion.div
+            className="h-25 w-20 perspective-[1000px] relative"
+            // Animation: Fade out and shrink slightly when matched
+            animate={isMatched ? { opacity: 0, scale: 0.9 } : { opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
             {/* CARD: The container that actually rotates */}
             <div
-                onClick={handleFlip}
-                className={cn('relative h-full w-full cursor-pointer rounded-xl shadow-xl transition-all duration-500 transform-3d', { 'transform-[rotateY(180deg)]': isFlipped })}
+                // Disable click if already flipped or matched
+                onClick={isMatched || isFlipped ? undefined : handleFlip}
+                className={cn(
+                    'relative h-full w-full rounded-xl shadow-xl transition-all duration-500 transform-3d',
+                    // Rotate if flipped
+                    { 'transform-[rotateY(180deg)]': isFlipped },
+                    // Disable pointer events if matched so you can't click the empty space
+                    { 'pointer-events-none': isMatched },
+                    // Add cursor pointer only if interactable
+                    isMatched ? 'cursor-default' : 'cursor-pointer'
+                )}
             >
-
-                {/* FRONT FACE */}
+                {/* FRONT FACE (Usually the Card Back Design) */}
                 <div className="absolute inset-0 h-full w-full backface-hidden">
                     {backSide}
                 </div>
 
-                {/* BACK FACE */}
+                {/* BACK FACE (The Revealed Content) */}
                 <div className="absolute inset-0 h-full w-full transform-[rotateY(180deg)] backface-hidden">
                     {frontSide}
                 </div>
-
             </div>
-        </div>
+        </motion.div>
     );
 };
 
-export default FlipCard;
 
 const Image: React.FC<ComponentProps<'img'>> = (props) => {
     const { src, alt } = props
@@ -75,6 +92,7 @@ const Card = (props: {
                 backSide={<Image src={backImgSrc} alt="card back" />}
                 frontSide={<Image src={frontImgSrc} alt={`card-${cardId}`} />}
                 handleFlip={handleFlip} isFlipped={isFlipped}
+                isMatched={matched}
             />}
 
         </motion.div>
@@ -85,14 +103,12 @@ const Card = (props: {
 
 export const PlayArea = () => {
 
-    const { playCards, columns } = useGame()
+    const { playCards } = useGame()
     console.log({ playCards })
     return (
         <div className="flex flex-col items-center justify-center h-full space-y-8">
             {/* The Card Grid */}
-            <div className={clsx("grid gap-4 p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50 grid-cols-8 md:grid-cols-8", {
-                'grid-cols-4 md:grid-cols-4': columns === 4,
-            })}>
+            <div className={clsx("grid gap-4 p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50 grid-cols-8 md:grid-cols-8")}>
                 {playCards.map((card, i) => (
                     <Card
                         key={`${card.id}-${i}`}

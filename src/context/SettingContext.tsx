@@ -1,6 +1,8 @@
 import type { SettingsType, StatsType } from "@/types/game";
-import { DEFAULT_DIFFICULTY, LS_SETTINGS_KEY, LS_STATES_KEY } from "@/utils/settings";
+import { LS_SETTINGS_KEY, LS_STATES_KEY } from "@/utils/settings";
+import { CheckCircle2 } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useState, type PropsWithChildren } from "react";
+import { toast } from "sonner";
 
 export const SettingsContext = createContext<{
     settings: SettingsType,
@@ -25,6 +27,11 @@ export const SettingsProvider: React.FC<PropsWithChildren> = (props) => {
     const handleUpdateSettings = useCallback((newSettings: SettingsType) => {
         setSettings({ ...newSettings })
         localStorage.setItem(LS_SETTINGS_KEY, JSON.stringify(newSettings))
+        toast("Settings Saved", {
+            description: "Your game preferences have been updated.",
+            icon: <CheckCircle2 className="h-5 w-5 text-green-400" />, // Adds the green checkmark
+            duration: 3000
+        })
     }, [])
 
     const handleUpdateState = useCallback((newStates: StatsType) => {

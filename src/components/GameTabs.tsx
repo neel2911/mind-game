@@ -38,7 +38,7 @@ export const GameTabs = () => {
 
             </TabsList>
 
-            <div className="w-full max-w-4xl bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl min-h-100">
+            <div className="w-full max-w-4xl bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl min-h-100 flex">
                 <TabsContent value="play" className="mt-0 outline-none animate-in fade-in zoom-in-95 duration-300">
                     <PlayArea />
                 </TabsContent>
