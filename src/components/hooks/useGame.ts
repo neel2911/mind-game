@@ -1,35 +1,59 @@
-import { useSettings } from "@/context/SettingContext"
-import type { CardType } from "@/types/game"
-import { shuffleCards } from "@/utils/settings"
-import { useEffect, useState } from "react"
-
-
-
+import { useSettings } from "@/context/SettingsContext";
+import { useCallback } from "react";
 
 export const useGame = () => {
-    const { settings } = useSettings()
-    const { difficulty } = settings
+  const {
+    attemptRef,
+    timerIdRef,
+    handleUpdateScore,
+    handleFlipCard,
+    handleMatchCard,
+  } = useSettings();
 
-    const [isGameOver, setIsGameOver] = useState(false)
-    const [playCards, setPlayCards] = useState<CardType[]>([])
+  const updateScore = useCallback(() => {
+    handleUpdateScore();
+  }, [handleUpdateScore]);
 
-    useEffect(() => {
-        if (difficulty) {
-            const cards = shuffleCards(Number(difficulty))
-            setPlayCards([...cards])
-        }
-    }, [settings])
+  const areAttemptsMatched = useCallback((item1: number, item2: number) => {
+    return item1 === item2;
+  }, []);
 
-    const handleCardFlip = (id: number) => { }
-
-    const checkPair = () => { }
-
-    const updateScore = () => { }
-
-    const resetGame = () => { }
-
-    return {
-        playCards,
-        handleCardFlip,
+  const checkMatch = () => {
+    if (attemptRef.current[0] !== null && attemptRef.current[1] !== null) {
+      const isMatched = areAttemptsMatched(
+        attemptRef.current[0][1],
+        attemptRef.current[1][1],
+      );
+      if (isMatched) {
+        handleMatchCard(attemptRef.current[0][0], true);
+        handleMatchCard(attemptRef.current[1][0], true);
+      } else {
+        handleFlipCard(attemptRef.current[0][0], false);
+        handleFlipCard(attemptRef.current[1][0], false);
+      }
+      updateScore();
+      attemptRef.current = [];
     }
-}
+  };
+
+  const handleCardFlip = (id: number, matchKey: number) => {
+    if (attemptRef.current.length < 2) {
+      handleFlipCard(id, true);
+      attemptRef.current.push([id, matchKey]);
+    }
+
+    if (attemptRef.current.length >= 2 && timerIdRef.current == null) {
+      timerIdRef.current = setTimeout(() => {
+        checkMatch();
+        timerIdRef.current = null;
+      }, 500);
+    }
+  };
+
+  const restartGame = () => {};
+
+  return {
+    handleCardFlip,
+    restartGame,
+  };
+};

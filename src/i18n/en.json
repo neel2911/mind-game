@@ -1,65 +1,65 @@
 {
-    "meta": {
-        "title": "Memory Game",
-        "description": "Challenge your cognitive reflexes"
-    },
-    "tabs": {
-        "play": "Play",
-        "rules": "Rules",
-        "settings": "Settings"
-    },
-    "playArea": {
-        "instruction": "Select two cards to find a match"
-    },
-    "rules": {
-        "title": "How to Play"
-    },
-    "card": {
-        "default_front": "Front",
-        "default_back": "Back",
-        "action_hint": "Click to flip",
-        "reveal_text": "You found me!",
-        "locked": "Matched"
+  "meta": {
+    "title": "Memory Game",
+    "description": "Challenge your cognitive reflexes"
+  },
+  "tabs": {
+    "play": "Play",
+    "rules": "Rules",
+    "settings": "Settings"
+  },
+  "playArea": {
+    "instruction": "Select two cards to find a match"
+  },
+  "rules": {
+    "title": "How to Play"
+  },
+  "card": {
+    "default_front": "Front",
+    "default_back": "Back",
+    "action_hint": "Click to flip",
+    "reveal_text": "You found me!",
+    "locked": "Matched"
+  },
+  "stats": {
+    "moves": "Moves",
+    "time": "Time",
+    "score": "Score",
+    "player": "Player",
+    "best_score": "Best Score",
+    "pairs_left": "Pairs Left"
+  },
+  "controls": {
+    "play_now": "Play Now",
+    "restart": "Restart Game",
+    "shuffle": "Shuffle Cards",
+    "next_level": "Next Level"
+  },
+  "accessibility": {
+    "card_label": "Card {{number}}",
+    "flip_instruction": "Double tap to flip card",
+    "card_face_up": "Card is face up showing {{content}}",
+    "card_face_down": "Card is face down"
+  },
+  "victory": {
+    "game": {
+      "victory_title": "Victory!",
+      "victory_subtitle": "You matched all the cards perfectly."
     },
     "stats": {
-        "moves": "Moves",
-        "time": "Time",
-        "score": "Score",
-        "player": "Player",
-        "best_score": "Best Score",
-        "pairs_left": "Pairs Left"
+      "moves_label": "Total Moves",
+      "accuracy": "Accuracy"
     },
     "controls": {
-        "play_now": "Play Now",
-        "restart": "Restart Game",
-        "shuffle": "Shuffle Cards",
-        "next_level": "Next Level"
-    },
-    "accessibility": {
-        "card_label": "Card {{number}}",
-        "flip_instruction": "Double tap to flip card",
-        "card_face_up": "Card is face up showing {{content}}",
-        "card_face_down": "Card is face down"
-    },
-    "victory": {
-        "game": {
-            "victory_title": "Victory!",
-            "victory_subtitle": "You matched all the cards perfectly."
-        },
-        "stats": {
-            "moves_label": "Total Moves",
-            "accuracy": "Accuracy"
-        },
-        "controls": {
-            "play_again": "Play Again",
-            "close": "Close"
-        }
-    },
-    "settings": {
-        "title": "Game Settings",
-        "description": "Customize your gameplay experience",
-        "playerName": "Player Name",
-        "numberOfCards": "Number of Cards",
-        "saveSetting": "Save Settings"
+      "play_again": "Play Again",
+      "settings": "Play with different settings"
     }
+  },
+  "settings": {
+    "title": "Game Settings",
+    "description": "Customize your gameplay experience",
+    "playerName": "Player Name",
+    "numberOfCards": "Number of Cards",
+    "saveSetting": "Save Settings"
+  }
 }
